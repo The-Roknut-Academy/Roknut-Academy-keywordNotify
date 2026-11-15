@@ -5,7 +5,7 @@ A Vencord userplugin by the **RokNut Industries Development Team**.
 Get a desktop notification the moment someone says one of your keywords in any server you're in. Click it to jump straight to the message. KeywordNotify can also drop a local "RokNut Alert" in a DM of your choice with a jump link.
 
 [![Discord](https://img.shields.io/badge/Discord-RokNut%20Academy-5865F2?logo=discord&logoColor=white)](https://discord.gg/TNB7rG7EGv)
-[![Docs](https://img.shields.io/badge/docs-DOCS.md-f59e0b)](https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/blob/main/DOCS.md)
+[![Docs](https://img.shields.io/badge/docs-DOCS.md-f59e0b)](https://github.com/The-Roknut-Academy/keywordNotify/blob/main/DOCS.md)
 [![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)](LICENSE.md)
 
 ## Highlights
@@ -21,7 +21,7 @@ Get a desktop notification the moment someone says one of your keywords in any s
 
 1. Clone this repo into your Vencord source at `src/userplugins/keywordNotify/`:
    ```
-   git clone https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify.git keywordNotify
+   git clone https://github.com/The-Roknut-Academy/keywordNotify.git
    ```
 2. Run `pnpm build` and `pnpm inject`
 3. Restart Discord and enable **KeywordNotify** in Settings → Vencord → Plugins
@@ -33,7 +33,7 @@ Requires Vencord installed from source. See the [custom plugin install guide](ht
 
 Normally KeywordNotify only sees messages Discord delivers live, so anything said while you were offline is missed. The optional **Catch up on startup** setting checks a limited number of unread channels after Discord connects and sends one summary alert for any hits.
 
-It is **off by default** and heavily limited: at most 30 channels (default 15), 50 messages per channel, a 48-hour lookback, at least 1.5 seconds between requests, a 15-minute cooldown, unread and non-muted channels only, and an immediate stop if Discord rate limits you. See the [full documentation](https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/blob/main/DOCS.md) for every safeguard.
+It is **off by default** and heavily limited: at most 30 channels (default 15), 50 messages per channel, a 48-hour lookback, at least 1.5 seconds between requests, a 15-minute cooldown, unread and non-muted channels only, and an immediate stop if Discord rate limits you. See the [full documentation](https://github.com/The-Roknut-Academy/keywordNotify/blob/main/DOCS.md) for every safeguard.
 
 > **API disclaimer:** Normal operation makes no network requests. The optional catch-up feature makes **read-only requests to Discord's own API** from your own client, using your own session. No third-party services are used, and nothing is sent anywhere except to Discord. Client mods and automated requests are not endorsed by Discord and may conflict with its Terms of Service, so you use this feature at your own risk. Keep the limits low.
 
@@ -54,7 +54,7 @@ By default (when **DM channel ID** is blank) the alert always appears in the DM 
 
 Full install steps, settings, troubleshooting and more are in the documentation:
 
-👉 **[Read the full docs (DOCS.md)](https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/blob/main/DOCS.md)**
+👉 **[Read the full docs (DOCS.md)](https://github.com/The-Roknut-Academy/keywordNotify/blob/main/DOCS.md)**
 
 ## Community
 
@@ -62,6 +62,6 @@ Questions, ideas or bugs? Join the [RokNut Academy Discord](https://discord.gg/T
 
 ## License
 
-GPL-3.0-or-later, as required for Vencord plugins. See [LICENSE.md](LICENSE.md).
+GPL-3.0-or-later with RokNut additional terms (credit, marking changes and branding use) under GPLv3 Section 7, as allowed for Vencord plugins. See [LICENSE.md](LICENSE.md).
 
 Built by the RokNut Industries Development Team, a RokNut Academy company.
