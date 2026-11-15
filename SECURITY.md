@@ -64,6 +64,6 @@ This is a community project maintained by volunteers, so response times can vary
 
 <div align="center">
 
-Built by the **RokNut Industries Development Team**, a RokNut Academy company. 🥜
+Built by the **RokNut Industries Development Team**, a RokNut Academy company. 🥜 This page is ai generated with gemini
 
 </div>
