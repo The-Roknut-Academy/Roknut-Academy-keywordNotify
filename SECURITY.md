@@ -30,7 +30,7 @@ Examples of things we want to hear about:
 - Ways the plugin could be tricked into running unwanted code or opening malicious links
 - Anything that could expose your Discord session or account data
 
-KeywordNotify is designed to be local and read-only. By default it makes no network requests, and its optional catch-up feature only makes capped, read-only requests to Discord's own API. See the [API disclaimer](https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/blob/main/DOCS.md#api-disclaimer).
+KeywordNotify is designed to be local and read-only. By default it makes no network requests, and its optional catch-up feature only makes capped, read-only requests to Discord's own API. See the [API disclaimer](https://github.com/The-Roknut-Academy/keywordNotify/blob/main/DOCS.md#api-disclaimer).
 
 ## Reporting a vulnerability
 
