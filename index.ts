@@ -42,7 +42,7 @@ const INVITE_URL = "https://discord.gg/TNB7rG7EGv";
 const BRAND = "RokNut Industries";
 const VERSION = "1.1.0";
 
-const DOCS_URL = "https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/blob/main/DOCS.md";
+const DOCS_URL = "https://github.com/The-Roknut-Academy/keywordNotify/blob/main/DOCS.md";
 
 function openLink(url: string) {
     try {
