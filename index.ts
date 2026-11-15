@@ -5,7 +5,7 @@
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * any later version.
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -40,6 +40,7 @@ const ReadStateStore = findStoreLazy("ReadStateStore");
 
 const INVITE_URL = "https://discord.gg/TNB7rG7EGv";
 const BRAND = "RokNut Industries";
+const VERSION = "1.1.0";
 
 const DOCS_URL = "https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/blob/main/DOCS.md";
 
@@ -74,7 +75,7 @@ function BrandingPanel() {
             borderLeft: "4px solid #f59e0b"
         }
     },
-        h("div", { style: { fontSize: "18px", fontWeight: 700, color: "var(--header-primary)" } }, "🥜 KeywordNotify"),
+        h("div", { style: { fontSize: "18px", fontWeight: 700, color: "var(--header-primary)" } }, `🥜 KeywordNotify v${VERSION}`),
         h("div", { style: { margin: "4px 0 12px", color: "var(--text-muted)" } },
             `Built by the ${BRAND} Development Team • a RokNut Academy company`),
         h("div", { style: { margin: "0 0 12px", color: "var(--text-normal)", lineHeight: 1.5 } },
