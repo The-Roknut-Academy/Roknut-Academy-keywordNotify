@@ -25,6 +25,8 @@ Built by the **RokNut Industries Development Team** · a RokNut Academy company
 8. [Settings reference](#8-settings-reference)
 9. [Desktop notifications in detail](#9-desktop-notifications-in-detail)
 10. [The jump-link DM message in detail](#10-the-jump-link-dm-message-in-detail)
+    - [Catch-up on startup (optional)](#10a-catch-up-on-startup-optional)
+    - [API disclaimer](#api-disclaimer)
 11. [Turning the plugin on and off](#11-turning-the-plugin-on-and-off)
 12. [Recipes: common setups](#12-recipes-common-setups)
 13. [Testing your setup](#13-testing-your-setup)
@@ -58,7 +60,7 @@ Typical uses:
 - Catch "help" or "support" style words in servers you moderate.
 - Track mentions of a game, a clan or a community name.
 
-KeywordNotify is **read-only**. It never sends messages as you, never edits or deletes anything, and never contacts any outside service.
+KeywordNotify is **read-only**. It never sends messages as you, never edits or deletes anything, and never contacts any third-party service. Its only network activity is the optional, off-by-default [catch-up feature](#10a-catch-up-on-startup-optional), which makes read-only requests to Discord's own API. See the [API disclaimer](#api-disclaimer).
 
 ---
 
@@ -111,7 +113,7 @@ If all eleven pass, the alerts are made.
 
 ### 2.3 Where the data comes from
 
-KeywordNotify listens to events that **your Discord client already receives**. It does not make requests to Discord's servers or anyone else's. If your client never received a message, KeywordNotify can't see it (see [Limitations](#15-limitations)).
+KeywordNotify listens to events that **your Discord client already receives**. In its normal mode it makes no requests to Discord's servers or anyone else's. The only exception is the optional [catch-up feature](#10a-catch-up-on-startup-optional), which is off by default. If your client never received a message and catch-up is off, KeywordNotify can't see it (see [Limitations](#15-limitations)).
 
 ---
 
@@ -360,6 +362,11 @@ Open them at **Settings → Vencord → Plugins → KeywordNotify → gear icon*
 | Ignore muted channels | On | No |
 | Ignore the channel you're viewing | Off | No |
 | Ignore bots | Off | No |
+| Catch up on startup | **Off** | No |
+| Catch-up: lookback hours | 12 | No |
+| Catch-up: max channels | 15 | No |
+| Catch-up: messages per channel | 50 | No |
+| Catch-up: seconds between requests | 2 | No |
 
 ### 8.2 Each setting in detail
 
@@ -413,12 +420,34 @@ Open them at **Settings → Vencord → Plugins → KeywordNotify → gear icon*
 - **What it does:** Skips messages sent by bot accounts.
 - **Turn it on when:** Bots in your servers repeat your keywords (for example, logs or announcement bots).
 
+#### Catch up on startup
+- **What it does:** After Discord connects, checks a limited number of unread channels for keywords you missed while offline.
+- **Default:** **Off.** It's the only feature that makes network requests.
+- **Details and risks:** See [Catch-up on startup](#10a-catch-up-on-startup-optional) and the [API disclaimer](#api-disclaimer).
+
+#### Catch-up: lookback hours
+- **What it does:** How far back catch-up looks, in hours. Hard limit: 48. Default: 12.
+- **Note:** Catch-up never looks further back than your last read position in a channel, whichever is more recent.
+
+#### Catch-up: max channels
+- **What it does:** The most unread channels catch-up will check per run. One request is made per channel. Hard limit: 30. Default: 15.
+
+#### Catch-up: messages per channel
+- **What it does:** How many messages are checked in each channel. Hard limit: 50. Default: 50.
+
+#### Catch-up: seconds between requests
+- **What it does:** The pause between requests. Minimum: 1.5 seconds. Default: 2.
+- **Tip:** Higher is safer. Lower values are not allowed below the minimum.
+
+Values outside the allowed ranges are automatically clamped to the nearest limit.
+
 ### 8.3 Settings you may see in the panel header
 
 At the top of the settings page, KeywordNotify shows a **branding panel** containing:
 
 - The plugin name and RokNut Industries Development Team credit
 - A **How to add words** explanation
+- A short **API disclaimer** about the optional catch-up feature
 - **Join the RokNut Academy Discord** button, which opens the invite link in your browser
 - **Docs** button, which opens this documentation page in your browser
 
@@ -508,6 +537,67 @@ Every line of the quoted message is prefixed with `> ` so long or multi-line mes
 
 ---
 
+## 10a. Catch-up on startup (optional)
+
+### What it does
+
+Normally KeywordNotify only sees messages Discord pushes to your client live, so anything said while Discord was closed or offline is missed. **Catch up on startup** can look for those missed messages. About 20 seconds after Discord connects, it:
+
+1. Finds channels with **unread** messages that match your settings (servers you're in, not muted if **Ignore muted channels** is on, and channels you can view).
+2. Picks the most recently active ones, up to your **max channels** setting.
+3. For each, makes one **read-only** request for recent messages since your last read position (and no older than your **lookback** window).
+4. Runs your keywords over those messages using the same matching rules as live messages.
+5. If anything matched, shows **one summary notification** ("N keyword hits while you were away") and, if **Send fake DM** is on, one local jump-link message listing up to 10 hits with links.
+
+### Safeguards
+
+Catch-up is built to be conservative. All of these are enforced in code, and the limits cannot be raised by settings:
+
+| Safeguard | Value |
+| --- | --- |
+| Off by default | Yes, you must turn it on |
+| Hard cap on channels per run | 30 (default 15) |
+| Hard cap on messages per channel | 50 (default 50) |
+| Hard cap on lookback | 48 hours (default 12) |
+| Minimum delay between requests | 1.5 seconds (default 2) |
+| Cooldown between runs | 15 minutes, so reconnects can't trigger repeated scans |
+| Startup delay | About 20 seconds after connecting, so it doesn't compete with Discord loading |
+| Only unread channels | Read channels are never requested |
+| Skips muted channels | When **Ignore muted channels** is on |
+| Only channels you can already view | Hidden or no-access channels are skipped |
+| Stops on rate limiting | If Discord says "slow down" (HTTP 429), catch-up stops immediately for that run |
+| Stops when you turn it off | Switching the plugin or the setting off cancels a run in progress |
+| No duplicates | Messages already alerted on live are not alerted again |
+| Your own messages are skipped | Catch-up never alerts on messages you sent |
+| One summary, not a flood | A single notification and a single DM message per run |
+| Needs keywords | If your keyword box is empty, catch-up does nothing and makes no requests |
+
+### What requests it makes
+
+For each checked channel, a single `GET` to Discord's `/channels/{id}/messages` endpoint with an `after` position and a `limit`. These are the same kind of read requests your Discord client makes when you open a channel. They are sent from your own client using your own session. Nothing is sent to anyone but Discord.
+
+### Limitations of catch-up
+
+- Only **unread** channels are checked, within your caps. In a very busy period, messages beyond the cap are not seen.
+- Within a channel, the most recent messages may be skipped if more than the per-channel cap arrived after your last read position, because Discord returns the oldest messages after that point first.
+- Edited, deleted or attachment-only messages aren't checked.
+- It depends on Discord's internal read-state data. If Vencord or Discord changes how that works, catch-up may stop finding channels until the plugin is updated.
+- Alerts are summaries, not one notification per message.
+
+### Recommended settings
+
+Leave the defaults. If you're in a very large number of servers, lower **max channels** rather than raising it, and consider raising the delay.
+
+### API disclaimer
+
+<a id="api-disclaimer"></a>
+
+> **API disclaimer.** KeywordNotify's normal operation uses only events your Discord client already receives and makes no network requests. The optional **Catch up on startup** feature makes **read-only requests to Discord's own API** (the message history endpoint) from your own client, using your own logged-in session. No third-party or external services are used, and nothing is sent anywhere except to Discord.
+>
+> The feature is **off by default**, is strictly capped (see the safeguards above), and stops when rate limited. Even so, automated requests from a client mod are not endorsed by Discord and may conflict with Discord's Terms of Service or be treated as unusual activity, especially if misused or combined with other tools. Client mods are used **at your own risk**. The authors are not responsible for any rate limits, restrictions or action taken against your account. Only enable catch-up if you understand and accept this, and keep the limits low.
+
+---
+
 ## 11. Turning the plugin on and off
 
 There are two separate switches:
@@ -582,7 +672,7 @@ If something doesn't work, go to [Troubleshooting](#16-troubleshooting).
 
 | Topic | Details |
 | --- | --- |
-| **Network access** | KeywordNotify makes **no network requests**. No analytics, telemetry or external APIs. |
+| **Network access** | By default, **none**. With the optional **Catch up on startup** feature on, it makes capped, read-only requests to **Discord's own API** only. No analytics, telemetry or third-party services, ever. See the [API disclaimer](#api-disclaimer). |
 | **What it reads** | Only messages your client already received. |
 | **What it stores** | Only its own settings (like your keywords) in Vencord's normal settings storage on your computer. It does not keep a log of matched messages. |
 | **What it sends** | Nothing. The jump-link message is local only. |
@@ -599,7 +689,7 @@ KeywordNotify can only react to what your client receives. It does **not**:
 
 - **Match non-text content.** Attachments, image text, stickers and embed contents are not checked. Only the message text is.
 - **Alert on edits.** If someone edits a message to add a keyword, no alert is made. Only new messages are checked.
-- **Catch messages you never received.** Messages sent while Discord was closed or offline aren't processed when you reconnect.
+- **Catch every missed message, even with catch-up on.** Catch-up only checks a limited number of unread channels and recent messages (see [Catch-up on startup](#10a-catch-up-on-startup-optional)). Anything beyond those caps, or in channels it doesn't check, is missed. With catch-up off, messages sent while Discord was closed or offline aren't processed at all.
 - **See channels you can't see.** No access, no event.
 - **Ping people.** Notifications and the jump-link message are local to you.
 - **Create real unread badges.** The jump-link message is not a real unread message.
@@ -713,7 +803,7 @@ Yes, in all servers your client receives messages from, subject to your settings
 No.
 
 **Will it catch messages from while I was offline?**
-No. It reacts to messages as your client receives them live.
+Only if you turn on the optional **Catch up on startup** setting, and only within its caps (a limited number of unread channels and recent messages). By default it reacts only to messages your client receives live. See [Catch-up on startup](#10a-catch-up-on-startup-optional).
 
 **Will it alert me about edited messages?**
 No, only new messages.
@@ -731,7 +821,7 @@ No noticeable impact. It does a quick text check on each incoming message.
 In Vencord's normal settings storage on your computer, alongside your other Vencord plugin settings. Updating the plugin keeps them.
 
 **Is it safe?**
-It makes no network requests and never sends anything. It only reads messages your client already has and shows you local alerts. Read the source in `index.ts` to see for yourself.
+By default it makes no network requests and never sends anything. It reads messages your client already has and shows you local alerts. If you turn on the optional catch-up feature, it makes capped, read-only requests to Discord's own API. Read the source in `index.ts` to see for yourself, and read the [API disclaimer](#api-disclaimer).
 
 **Can I change the branding or text?**
 The plugin is GPL-3.0-or-later, so you can modify and share it under the same license. See [LICENSE.md](LICENSE.md). Keep the license and copyright notices intact.
@@ -803,7 +893,7 @@ pnpm uninject
 | Part | What it does |
 | --- | --- |
 | License header | GPL-3.0-or-later notice |
-| Imports | Vencord APIs: notifications, settings, bot messages, stores, `React` |
+| Imports | Vencord APIs: notifications, settings, bot messages, stores, `RestAPI`, `React` |
 | Constants | Invite URL, docs URL and brand name |
 | `openLink` | Opens a URL in the browser (uses Vencord's native helper when available, otherwise `window.open`) |
 | `BrandingPanel` | The settings-page banner, built with `React.createElement` (no JSX, so the file can stay `.ts`) |
@@ -817,6 +907,8 @@ pnpm uninject
 - `definePlugin`, `definePluginSettings`, `OptionType` for the plugin and its settings
 - `showNotification` from the Notifications API for desktop notifications
 - `sendBotMessage` from the Commands API for the local jump-link message
+- `RestAPI` (Discord's own API client) for the optional catch-up feature only
+- `ReadStateStore` (via `findStoreLazy`) to find unread channels for catch-up
 - Webpack common stores such as `ChannelStore`, `GuildStore`, `UserStore`, `RelationshipStore`, `SelectedChannelStore`, `UserGuildSettingsStore` and `NavigationRouter`
 - The `flux` hook to listen for `MESSAGE_CREATE`
 
@@ -832,7 +924,7 @@ Rebuild with `pnpm build` and restart Discord after every change.
 
 ### 20.5 Vencord plugin rules
 
-If you contribute or submit anywhere, follow the Vencord community's plugin rules: no raw DOM manipulation (use patches and React), no selfbot or API-spam behavior, no FakeDeafen/FakeMute/StereoMic, and disclose any external API use. KeywordNotify uses no external APIs.
+If you contribute or submit anywhere, follow the Vencord community's plugin rules: no raw DOM manipulation (use patches and React), no selfbot or API-spam behavior, no FakeDeafen/FakeMute/StereoMic, and disclose any external API use. KeywordNotify uses no third-party or external APIs. Its optional catch-up feature calls Discord's own API, which is disclosed in the [API disclaimer](#api-disclaimer), is off by default and is strictly capped.
 
 ### 20.6 Contributing
 
@@ -860,6 +952,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 ---
 
 ## 22. Changelog
+
+### v1.1.0
+- New optional **Catch up on startup** feature, off by default, that checks a limited number of unread channels for keywords missed while offline
+- Safeguards: hard caps on channels, messages and lookback, minimum delay between requests, 15-minute cooldown, stop on rate limit, unread and non-muted channels only
+- Single summary notification and single DM message per catch-up run
+- API disclaimer added to the settings panel, README and docs
+- Messages already alerted live are never alerted twice
 
 ### v1.0.0
 - Desktop notifications when a message contains one of your keywords
