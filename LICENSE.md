@@ -31,7 +31,7 @@ If you copy, modify or distribute this work, you must keep:
 
 - the copyright notice **"Copyright (C) 2026 RokNut Industries Development Team"** in every source file that has it and in this file;
 - the original author credit: **"Built by the RokNut Industries Development Team, a RokNut Academy company"**;
-- a link to the original project: <https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify>.
+- a link to the original project: <https://github.com/The-Roknut-Academy/keywordNotify>.
 
 You may add your own copyright and credits **alongside** these, but you may not remove or hide ours.
 
