@@ -64,4 +64,4 @@ Questions, ideas or bugs? Join the [RokNut Academy Discord](https://discord.gg/T
 
 GPL-3.0-or-later with RokNut additional terms (credit, marking changes and branding use) under GPLv3 Section 7, as allowed for Vencord plugins. See [LICENSE.md](LICENSE.md).
 
-Built by the RokNut Industries Development Team, a RokNut Academy company.
+Built by the RokNut Industries Development Team, a RokNut Academy company. This page is ai generated with gemini
