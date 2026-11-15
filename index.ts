@@ -309,7 +309,6 @@ function notifyLive(message: any, channel: any) {
     );
 }
 
-/* ---------------------------- catch-up on startup ---------------------------- */
 
 let catchUpTimer: ReturnType<typeof setTimeout> | undefined;
 let catchUpRunning = false;
@@ -405,7 +404,6 @@ async function runCatchUp() {
                     console.warn("[KeywordNotify] Rate limited by Discord, stopping catch-up");
                     break;
                 }
-                // 403/404 and other per-channel errors: skip this channel
             }
         }
 
