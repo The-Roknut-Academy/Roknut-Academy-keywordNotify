@@ -7,7 +7,7 @@
 Maintained by the **RokNut Industries Development Team** · a RokNut Academy company
 
 [![Discord](https://img.shields.io/badge/Discord-RokNut%20Academy-5865F2?logo=discord&logoColor=white)](https://discord.gg/TNB7rG7EGv)
-[![Docs](https://img.shields.io/badge/docs-DOCS.md-f59e0b)](https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/blob/main/DOCS.md)
+[![Docs](https://img.shields.io/badge/docs-DOCS.md-f59e0b)](https://github.com/The-Roknut-Academy/keywordNotify/blob/main/DOCS.md)
 [![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)](LICENSE.md)
 
 </div>
@@ -20,8 +20,8 @@ Thanks for wanting to pitch in! Whether you found a bug, have an idea, or want t
 
 | I want to... | Do this |
 | --- | --- |
-| 🐛 Report a bug | [Open an issue](https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/issues/new) |
-| 💡 Suggest a feature | [Open an issue](https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/issues/new) and describe the idea |
+| 🐛 Report a bug | [Open an issue](https://github.com/The-Roknut-Academy/keywordNotify/issues/new) |
+| 💡 Suggest a feature | [Open an issue](https://github.com/The-Roknut-Academy/keywordNotify/issues/new) and describe the idea |
 | ❓ Ask a question | Ask in the [RokNut Academy Discord](https://discord.gg/TNB7rG7EGv) |
 | 📖 Improve the docs | Send a pull request editing `README.md` or `DOCS.md` |
 | 🛠️ Fix or add something in the code | Follow the pull request steps below |
@@ -37,7 +37,7 @@ A good report gets fixed faster. Please include:
 - Your **plugin settings** (leave out any private keywords)
 - The **full build error** or **console output**, if there is any (open the console with `Ctrl+Shift+I` in Discord)
 
-Before you post, check the [Troubleshooting section of the docs](https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify/blob/main/DOCS.md#16-troubleshooting). Your answer may already be there.
+Before you post, check the [Troubleshooting section of the docs](https://github.com/The-Roknut-Academy/keywordNotify/blob/main/DOCS.md#16-troubleshooting). Your answer may already be there.
 
 ## 💡 Suggesting a feature
 
