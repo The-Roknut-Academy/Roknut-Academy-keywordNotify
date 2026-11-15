@@ -983,7 +983,7 @@ Questions, ideas, bug reports or just want to say hi?
 
 <div align="center">
 
-Built by the **RokNut Industries Development Team**, a RokNut Academy company.
+Built by the **RokNut Industries Development Team**, a RokNut Academy company. This page is ai generated with gemini
 
 Licensed GPL-3.0-or-later. See [LICENSE.md](LICENSE.md).
 
