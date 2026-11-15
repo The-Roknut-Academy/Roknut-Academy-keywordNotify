@@ -2,6 +2,8 @@
 
 # 🥜 KeywordNotify Documentation
 
+**Version 1.1.0**
+
 **The complete guide to KeywordNotify**
 
 Built by the **RokNut Industries Development Team** · a RokNut Academy company
@@ -165,7 +167,7 @@ npm install -g pnpm
 8. Put KeywordNotify in it:
    ```bash
    cd src/userplugins
-   git clone https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify.git keywordNotify
+   git clone https://github.com/The-Roknut-Academy/keywordNotify.git
    cd ../..
    ```
    The result must be `src/userplugins/keywordNotify/index.ts`.
@@ -205,7 +207,7 @@ Vencord/
 
 ```bash
 cd path/to/Vencord/src/userplugins
-git clone https://github.com/The-Roknut-Academy/Roknut-Academy-keywordNotify.git keywordNotify
+git clone https://github.com/The-Roknut-Academy/keywordNotify.git
 ```
 
 ### 4.3 Option B: download manually
